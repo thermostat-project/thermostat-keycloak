@@ -55,6 +55,8 @@ TMS_D=tms-d
 TMS_E=tms-e
 TMS_F=tms-f
 TMS_G=tms-g
+TMS_H=tms-cmd-client
+TMS_I=tms-cmd-agent
 
 ROLE_R_A=r-a
 ROLE_W_A=w-a
@@ -62,12 +64,17 @@ ROLE_U_A=u-a
 ROLE_D_A=d-a
 ROLE_R_B=r-b
 ROLE_WUD_B=w,u,d-b
+ROLE_COMMANDS_PING=ping-commands
+ROLE_COMMANDS_RECEIVER_PROVIDER=receiver_provider-commands
 
 THERMOSTAT_PASSWORD=tms-pass
 
 KEYCLOAK_REALM=thermostat
 
-SERVER=http://127.0.0.1:8080/auth
+HOST=127.0.0.1
+PORT=8080
+RETRIES=25
+SERVER=http://${HOST}:${PORT}/auth
 CLI=keycloak/bin/kcadm.sh
 
 keycloak/bin/add-user-keycloak.sh --user ${KEYCLOAK_ADMIN} --password ${KEYCLOAK_ADMIN}
@@ -75,12 +82,8 @@ keycloak/bin/add-user-keycloak.sh --user ${KEYCLOAK_ADMIN} --password ${KEYCLOAK
 keycloak/bin/standalone.sh & >/dev/null 2&>1
 
 # Wait for keycloak to startup
-HOST=127.0.0.1
-PORT=8080
-RETRIES=25
-
 sleep 10
-until curl -f -v "http://${HOST}:${PORT}/auth" >/dev/null 2>/dev/null
+until curl -f -v "${SERVER}" >/dev/null 2>/dev/null
 do
     RETRIES=$(($RETRIES - 1))
     if [ $RETRIES -eq 0 ]
@@ -137,5 +140,13 @@ ${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_F} --new-password ${TH
 ${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_G}
 ${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_G} --rolename thermostat --rolename ${ROLE_W_A} --rolename ${ROLE_U_A} --rolename ${ROLE_D_A} --rolename ${ROLE_WUD_B}
 ${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_G} --new-password ${THERMOSTAT_PASSWORD}
+
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_H}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_H} --rolename thermostat --rolename ${ROLE_COMMANDS_PING}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_H} --new-password ${THERMOSTAT_PASSWORD}
+
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_I}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_I} --rolename thermostat --rolename ${ROLE_COMMANDS_RECEIVER_PROVIDER}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_I} --new-password ${THERMOSTAT_PASSWORD}
 
 keycloak/bin/jboss-cli.sh --connect command=:shutdown
