@@ -35,28 +35,29 @@
 # to do so, delete this exception statement from your version.
 #
 
+KEYCLOAK_ADMIN=tms-admin
 
 # Listing of users and their roles
 # User : Role
-# A : r-a
-# B : w-a
-# C : u-a
-# D : d-a
-# E : r-a r-b
-# F : w-a u-a d-a
-# G : w-a u-a d-a wud-b
+# tms-r-a : r-a
+# tms-w-a : w-a
+# tms-u-a : u-a
+# tms-d-a : d-a
+# tms-r-a-r-b : r-a r-b
+# tms-wud-a : w-a u-a d-a
+# tms-wud-a-wud-b : w-a u-a d-a w,u,d-b
+# tms-cmd-client : ping-commands
+# tms-cmd-agent : receiver_provider-commands
 
-KEYCLOAK_ADMIN=tms-admin
-
-TMS_A=tms-a
-TMS_B=tms-b
-TMS_C=tms-c
-TMS_D=tms-d
-TMS_E=tms-e
-TMS_F=tms-f
-TMS_G=tms-g
-TMS_H=tms-cmd-client
-TMS_I=tms-cmd-agent
+TMS_R_A=tms-r-a
+TMS_W_A=tms-w-a
+TMS_U_A=tms-u-a
+TMS_R_A_R_B_A=tms-d-a
+TMS_E=tms-r-a-r-b
+TMS_WUD_A=tms-wud-a
+TMS_WUD_A_WUD_B=tms-wud-a-wud-b
+TMS_CMD_CLIENT=tms-cmd-client
+TMS_CMD_AGENT=tms-cmd-agent
 
 ROLE_R_A=r-a
 ROLE_W_A=w-a
@@ -113,40 +114,40 @@ ${CLI} create clients -r ${KEYCLOAK_REALM} -s clientId=thermostat-bearer -s enab
 
 ${CLI} create clients -r ${KEYCLOAK_REALM} -s clientId=thermostat-web-client -s enabled=true -s publicClient=true -s 'redirectUris=["http://localhost:8080/*"]' -s 'webOrigins=["+"]' -s directAccessGrantsEnabled=true
 
-${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_A}
-${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_A} --rolename thermostat --rolename ${ROLE_R_A}
-${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_A} --new-password ${THERMOSTAT_PASSWORD}
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_R_A}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_R_A} --rolename thermostat --rolename ${ROLE_R_A}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_R_A} --new-password ${THERMOSTAT_PASSWORD}
 
-${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_B}
-${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_B} --rolename thermostat --rolename ${ROLE_W_A}
-${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_B} --new-password ${THERMOSTAT_PASSWORD}
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_W_A}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_W_A} --rolename thermostat --rolename ${ROLE_W_A}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_W_A} --new-password ${THERMOSTAT_PASSWORD}
 
-${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_C}
-${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_C} --rolename thermostat --rolename ${ROLE_U_A}
-${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_C} --new-password ${THERMOSTAT_PASSWORD}
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_U_A}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_U_A} --rolename thermostat --rolename ${ROLE_U_A}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_U_A} --new-password ${THERMOSTAT_PASSWORD}
 
-${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_D}
-${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_D} --rolename thermostat --rolename ${ROLE_D_A}
-${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_D} --new-password ${THERMOSTAT_PASSWORD}
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_R_A_R_B_A}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_R_A_R_B_A} --rolename thermostat --rolename ${ROLE_D_A}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_R_A_R_B_A} --new-password ${THERMOSTAT_PASSWORD}
 
 ${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_E}
 ${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_E} --rolename thermostat --rolename ${ROLE_R_A} --rolename ${ROLE_R_B}
 ${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_E} --new-password ${THERMOSTAT_PASSWORD}
 
-${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_F}
-${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_F} --rolename thermostat --rolename ${ROLE_W_A} --rolename ${ROLE_U_A} --rolename ${ROLE_D_A}
-${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_F} --new-password ${THERMOSTAT_PASSWORD}
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_WUD_A}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_WUD_A} --rolename thermostat --rolename ${ROLE_W_A} --rolename ${ROLE_U_A} --rolename ${ROLE_D_A}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_WUD_A} --new-password ${THERMOSTAT_PASSWORD}
 
-${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_G}
-${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_G} --rolename thermostat --rolename ${ROLE_W_A} --rolename ${ROLE_U_A} --rolename ${ROLE_D_A} --rolename ${ROLE_WUD_B}
-${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_G} --new-password ${THERMOSTAT_PASSWORD}
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_WUD_A_WUD_B}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_WUD_A_WUD_B} --rolename thermostat --rolename ${ROLE_W_A} --rolename ${ROLE_U_A} --rolename ${ROLE_D_A} --rolename ${ROLE_WUD_B}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_WUD_A_WUD_B} --new-password ${THERMOSTAT_PASSWORD}
 
-${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_H}
-${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_H} --rolename thermostat --rolename ${ROLE_COMMANDS_PING}
-${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_H} --new-password ${THERMOSTAT_PASSWORD}
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_CMD_CLIENT}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_CMD_CLIENT} --rolename thermostat --rolename ${ROLE_COMMANDS_PING}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_CMD_CLIENT} --new-password ${THERMOSTAT_PASSWORD}
 
-${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_I}
-${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_I} --rolename thermostat --rolename ${ROLE_COMMANDS_RECEIVER_PROVIDER}
-${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_I} --new-password ${THERMOSTAT_PASSWORD}
+${CLI} create users -r ${KEYCLOAK_REALM} -s enabled=true -s username=${TMS_CMD_AGENT}
+${CLI} add-roles -r ${KEYCLOAK_REALM} --uusername ${TMS_CMD_AGENT} --rolename thermostat --rolename ${ROLE_COMMANDS_RECEIVER_PROVIDER}
+${CLI} set-password -r ${KEYCLOAK_REALM} --username ${TMS_CMD_AGENT} --new-password ${THERMOSTAT_PASSWORD}
 
 keycloak/bin/jboss-cli.sh --connect command=:shutdown
